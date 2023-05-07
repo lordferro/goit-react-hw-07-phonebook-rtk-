@@ -1,20 +1,22 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { StyledContactsForm } from './ContactsForm.styled';
-import { selectContactsItems, selectIsAdding } from 'redux/selectors';
-import { addContactThunk } from 'redux/contactsOperation';
-import { ColorRing } from 'react-loader-spinner';
-import { startAddingContact } from 'redux/contactsSlice';
 
+import { ColorRing } from 'react-loader-spinner';
+
+import {
+  useAddContactsMutation,
+  useFetchContactsQuery,
+} from 'redux/contactsAPI';
 
 export const ContactsForm = () => {
-  const contacts = useSelector(selectContactsItems);
-  const isAdding = useSelector(selectIsAdding)
-  const dispatch = useDispatch();
+  const [func, data] = useAddContactsMutation();
+
+  const { data: contacts } = useFetchContactsQuery();
+
 
   const handleSubmit = e => {
-    dispatch(startAddingContact())
+
     const form = e.target;
-   
+
     e.preventDefault();
 
     const newContact = {
@@ -28,8 +30,7 @@ export const ContactsForm = () => {
       return alert(`${form.name.value} is already in contacts`);
     }
 
-    dispatch(addContactThunk(newContact));
-
+    func(newContact);
     form.reset();
   };
 
@@ -58,7 +59,7 @@ export const ContactsForm = () => {
       />
       <button type="submit" style={{ display: 'flex', alignItems: 'center' }}>
         <ColorRing
-          visible={isAdding}
+          // visible={}
           height="20"
           width="20"
           ariaLabel="blocks-loading"
