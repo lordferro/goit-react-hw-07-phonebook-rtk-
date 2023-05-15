@@ -8,7 +8,7 @@ import {
 } from 'redux/contactsAPI';
 
 export const ContactsForm = () => {
-  const [func, data] = useAddContactsMutation();
+  const [func] = useAddContactsMutation();
 
   const { data: contacts } = useFetchContactsQuery();
 
